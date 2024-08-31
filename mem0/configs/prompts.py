@@ -1,42 +1,42 @@
 UPDATE_MEMORY_PROMPT = """
-You are an expert at merging, updating, and organizing memories. When provided with existing memories and new information, your task is to merge and update the memory list to reflect the most accurate and current information. You are also provided with the matching score for each existing memory to the new information. Make sure to leverage this information to make informed decisions about which memories to update or merge.
+您是合并、更新和组织记忆的专家。当获得现有记忆和新信息时，您的任务是合并和更新记忆列表以反映最准确和最新的信息。您还将获得每个现有记忆与新信息的匹配分数。确保利用这些信息做出明智的决定，确定要更新或合并哪些记忆。
 
-Guidelines:
-- Eliminate duplicate memories and merge related memories to ensure a concise and updated list.
-- If a memory is directly contradicted by new information, critically evaluate both pieces of information:
-    - If the new memory provides a more recent or accurate update, replace the old memory with new one.
-    - If the new memory seems inaccurate or less detailed, retain the old memory and discard the new one.
-- Maintain a consistent and clear style throughout all memories, ensuring each entry is concise yet informative.
-- If the new memory is a variation or extension of an existing memory, update the existing memory to reflect the new information.
+准则：
+- 消除重复记忆并合并相关记忆，以确保列表简洁且更新。
+- 如果记忆与新信息直接矛盾，请批判性地评估这两条信息：
+- 如果新记忆提供了更新或更准确的更新，请用新记忆替换旧记忆。
+- 如果新记忆似乎不准确或不够详细，请保留旧记忆并丢弃新记忆。
+- 在所有记忆中保持一致和清晰的风格，确保每个条目简洁而信息丰富。
+- 如果新记忆是现有记忆的变体或扩展，请更新现有记忆以反映新信息。
 
-Here are the details of the task:
-- Existing Memories:
+以下是任务的详细信息：
+- 现有记忆：
 {existing_memories}
 
-- New Memory: {memory}
+- 新记忆：{memory}
 """
 
 MEMORY_DEDUCTION_PROMPT = """
-Deduce the facts, preferences, and memories from the provided text.
-Just return the facts, preferences, and memories in bullet points:
-Natural language text: {user_input}
-User/Agent details: {metadata}
+从提供的文本中推断事实、偏好和记忆。
+只需以项目符号的形式返回事实、偏好和记忆：
+自然语言文本：{user_input}
+用户/代理详细信息：{metadata}
 
-Constraint for deducing facts, preferences, and memories:
-- The facts, preferences, and memories should be concise and informative.
-- Don't start by "The person likes Pizza". Instead, start with "Likes Pizza".
-- Don't remember the user/agent details provided. Only remember the facts, preferences, and memories.
+推断事实、偏好和记忆的约束：
+- 事实、偏好和记忆应简洁且信息丰富。
+- 不要以“此人喜欢披萨”开头。相反，以“喜欢披萨”开头。
+- 不要记住提供的用户/代理详细信息。只记住事实、偏好和记忆。
 
-Deduced facts, preferences, and memories:
+推断出的事实、偏好和记忆：
 """
 
 MEMORY_ANSWER_PROMPT = """
-You are an expert at answering questions based on the provided memories. Your task is to provide accurate and concise answers to the questions by leveraging the information given in the memories.
+您是根据提供的记忆回答问题的专家。您的任务是利用记忆中提供的信息为问题提供准确而简洁的答案。
 
-Guidelines:
-- Extract relevant information from the memories based on the question.
-- If no relevant information is found, make sure you don't say no information is found. Instead, accept the question and provide a general response.
-- Ensure that the answers are clear, concise, and directly address the question.
+指导原则：
+- 根据问题从记忆中提取相关信息。
+- 如果未找到相关信息，请确保不要说未找到任何信息。相反，接受问题并提供一般性答复。
+- 确保答案清晰、简洁并直接解决问题。
 
-Here are the details of the task:
+以下是任务的详细信息：
 """

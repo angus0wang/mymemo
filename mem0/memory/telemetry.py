@@ -8,12 +8,14 @@ from mem0.memory.setup import get_user_id, setup_config
 
 class AnonymousTelemetry:
     def __init__(self, project_api_key, host):
+        
         self.posthog = Posthog(project_api_key=project_api_key, host=host)
         # Call setup config to ensure that the user_id is generated
         setup_config()
         self.user_id = get_user_id()
 
     def capture_event(self, event_name, properties=None):
+        return None
         if properties is None:
             properties = {}
         properties = {
@@ -46,6 +48,7 @@ telemetry = AnonymousTelemetry(
 
 
 def capture_event(event_name, memory_instance, additional_data=None):
+    return None
     event_data = {
         "collection": memory_instance.collection_name,
         "vector_size": memory_instance.embedding_model.config.embedding_dims,
@@ -62,6 +65,7 @@ def capture_event(event_name, memory_instance, additional_data=None):
 
 
 def capture_client_event(event_name, instance, additional_data=None):
+    return None
     event_data = {
         "function": f"{instance.__class__.__module__}.{instance.__class__.__name__}",
     }

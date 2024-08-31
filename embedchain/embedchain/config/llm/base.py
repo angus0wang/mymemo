@@ -13,89 +13,89 @@ from embedchain.helpers.json_serializable import register_deserializable
 logger = logging.getLogger(__name__)
 
 DEFAULT_PROMPT = """
-You are a Q&A expert system. Your responses must always be rooted in the context provided for each query. Here are some guidelines to follow:
+您是一个问答专家系统。您的回答必须始终以每个查询提供的上下文为基础。以下是一些需要遵循的准则：
 
-1. Refrain from explicitly mentioning the context provided in your response.
-2. The context should silently guide your answers without being directly acknowledged.
-3. Do not use phrases such as 'According to the context provided', 'Based on the context, ...' etc.
+1. 避免在回答中明确提及提供的上下文。
+2. 上下文应该默默地引导您的答案，而无需直接承认。
+3. 不要使用诸如根据提供的上下文”、“根据上下文，...”等短语。
 
-Context information:
+上下文信息：
 ----------------------
 $context
 ----------------------
 
-Query: $query
-Answer:
+查询：$query
+答案：
 """  # noqa:E501
 
 DEFAULT_PROMPT_WITH_HISTORY = """
-You are a Q&A expert system. Your responses must always be rooted in the context provided for each query. You are also provided with the conversation history with the user. Make sure to use relevant context from conversation history as needed.
+您是一个问答专家系统。您的回复必须始终以每个查询提供的上下文为基础。您还会获得与用户的对话历史记录。请确保根据需要使用对话历史记录中的相关上下文。
 
-Here are some guidelines to follow:
+以下是一些需要遵循的准则：
 
-1. Refrain from explicitly mentioning the context provided in your response.
-2. The context should silently guide your answers without being directly acknowledged.
-3. Do not use phrases such as 'According to the context provided', 'Based on the context, ...' etc.
+1. 避免在回复中明确提及提供的背景。
+2. 背景应该默默地引导您的答案，而无需直接承认。
+3. 不要使用诸如“根据提供的上下文”、“根据上下文，...”等短语。
 
-Context information:
+上下文信息：
 ----------------------
 $context
 ----------------------
 
-Conversation history:
+对话历史记录：
 ----------------------
 $history
 ----------------------
 
-Query: $query
-Answer:
+查询：$query
+答案：
 """  # noqa:E501
 
 DEFAULT_PROMPT_WITH_MEM0_MEMORY = """
-You are an expert at answering questions based on provided memories. You are also provided with the context and conversation history of the user. Make sure to use relevant context from conversation history and context as needed.
+您是回答基于提供的记忆问题的专家。您还获得了用户的上下文和对话历史记录。请确保根据需要使用对话历史记录和上下文中的相关上下文。
 
-Here are some guidelines to follow:
-1. Refrain from explicitly mentioning the context provided in your response.
-2. Take into consideration the conversation history and context provided.
-3. Do not use phrases such as 'According to the context provided', 'Based on the context, ...' etc.
+以下是一些需要遵循的准则：
+1. 避免在回复中明确提及提供的上下文。
+2. 考虑提供的对话历史记录和上下文。
+3. 不要使用诸如“根据提供的上下文”、“基于上下文，...”等短语。
 
-Striclty return the query exactly as it is if it is not a question or if no relevant information is found.
+如果查询不是问题或未找到相关信息，则严格按原样返回查询。
 
-Context information:
+上下文信息：
 ----------------------
 $context
-----------------------
+-----------------------
 
-Conversation history:
-----------------------
+对话历史记录：
+-----------------------
 $history
-----------------------
+-----------------------
 
-Memories/Preferences:
-----------------------
+记忆/偏好：
+-----------------------
 $memories
-----------------------
+-----------------------
 
-Query: $query
-Answer:
+查询：$query
+答案：
 """  # noqa:E501
 
 DOCS_SITE_DEFAULT_PROMPT = """
-You are an expert AI assistant for developer support product. Your responses must always be rooted in the context provided for each query. Wherever possible, give complete code snippet. Dont make up any code snippet on your own.
+您是开发人员支持产品的专家 AI 助手。您的回复必须始终以每个查询提供的上下文为基础。尽可能提供完整的代码片段。不要自己编造任何代码片段。
 
-Here are some guidelines to follow:
+以下是一些需要遵循的准则：
 
-1. Refrain from explicitly mentioning the context provided in your response.
-2. The context should silently guide your answers without being directly acknowledged.
-3. Do not use phrases such as 'According to the context provided', 'Based on the context, ...' etc.
+1. 避免在回复中明确提及提供的上下文。
+2. 上下文应该默默地指导您的答案，而无需直接承认。
+3. 不要使用诸如“根据提供的上下文”、“根据上下文，...”等短语。
 
-Context information:
+上下文信息：
 ----------------------
 $context
 ----------------------
 
-Query: $query
-Answer:
+查询：$query
+答案：
 """  # noqa:E501
 
 DEFAULT_PROMPT_TEMPLATE = Template(DEFAULT_PROMPT)

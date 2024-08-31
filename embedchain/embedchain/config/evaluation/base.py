@@ -3,47 +3,47 @@ from typing import Optional
 from embedchain.config.base_config import BaseConfig
 
 ANSWER_RELEVANCY_PROMPT = """
-Please provide $num_gen_questions questions from the provided answer.
-You must provide the complete question, if are not able to provide the complete question, return empty string ("").
-Please only provide one question per line without numbers or bullets to distinguish them.
-You must only provide the questions and no other text.
+请从提供的答案中提供 $num_gen_questions 个问题。
+您必须提供完整的问题，如果无法提供完整的问题，则返回空字符串 ("")。
+每行请仅提供一个问题，无需数字或项目符号来区分它们。
+您必须仅提供问题，而无需提供其他文本。
 
 $answer
 """  # noqa:E501
 
 
 CONTEXT_RELEVANCY_PROMPT = """
-Please extract relevant sentences from the provided context that is required to answer the given question.
-If no relevant sentences are found, or if you believe the question cannot be answered from the given context, return the empty string ("").
-While extracting candidate sentences you're not allowed to make any changes to sentences from given context or make up any sentences.
-You must only provide sentences from the given context and nothing else.
+请从提供的上下文中提取回答给定问题所需的相关句子。
+如果未找到相关句子，或者您认为无法从给定的上下文中回答问题，则返回空字符串 ("")。
+提取候选句子时，您不得对给定上下文中的句子进行任何更改或编造任何句子。
+您只能提供给定上下文中的句子，而不能提供其他任何内容。
 
-Context: $context
-Question: $question
+上下文：$context
+问题：$question
 """  # noqa:E501
 
 GROUNDEDNESS_ANSWER_CLAIMS_PROMPT = """
-Please provide one or more statements from each sentence of the provided answer.
-You must provide the symantically equivalent statements for each sentence of the answer.
-You must provide the complete statement, if are not able to provide the complete statement, return empty string ("").
-Please only provide one statement per line WITHOUT numbers or bullets.
-If the question provided is not being answered in the provided answer, return empty string ("").
-You must only provide the statements and no other text.
+请从所提供答案的每个句子中提供一个或多个陈述。
+您必须为答案的每个句子提供语义等效的陈述。
+您必须提供完整的陈述，如果无法提供完整的陈述，则返回空字符串（""）。
+每行请仅提供一个陈述，不带数字或项目符号。
+如果提供的答案未回答所提供问题，则返回空字符串（""）。
+您必须仅提供陈述，而不能提供其他文本。
 
 $question
 $answer
 """  # noqa:E501
 
 GROUNDEDNESS_CLAIMS_INFERENCE_PROMPT = """
-Given the context and the provided claim statements, please provide a verdict for each claim statement whether it can be completely inferred from the given context or not.
-Use only "1" (yes), "0" (no) and "-1" (null) for "yes", "no" or "null" respectively.
-You must provide one verdict per line, ONLY WITH "1", "0" or "-1" as per your verdict to the given statement and nothing else.
-You must provide the verdicts in the same order as the claim statements.
+给定上下文和提供的声明，请为每个声明提供一个判定，无论是否可以根据给定的上下文完全推断出来。
+仅使用"1"（是）、"0"（否）和"-1"（空）分别表示"是"、"否"或"空"。
+您必须每行提供一个判定，仅使用"1"、"0"或"-1"作为对给定声明的判定，不能使用其他任何内容。
+您必须按照声明的顺序提供判定。
 
-Contexts: 
+上下文：
 $context
 
-Claim statements: 
+声明：
 $claim_statements
 """  # noqa:E501
 

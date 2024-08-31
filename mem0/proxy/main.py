@@ -1,13 +1,8 @@
 import httpx
 from typing import Optional, List, Union
 import threading
+from openai import OpenAI
 
-try:
-    import litellm
-except ImportError:
-    raise ImportError(
-        "litellm requires extra dependencies. Install with `pip install litellm`"
-    ) from None
 
 from mem0.memory.telemetry import capture_client_event
 from mem0 import Memory, MemoryClient
@@ -80,15 +75,12 @@ class Completions:
         api_version: Optional[str] = None,
         api_key: Optional[str] = None,
         model_list: Optional[list] = None,  # pass in a list of api_base,keys, etc.
+        **kwargs,
     ):
         if not any([user_id, agent_id, run_id]):
             raise ValueError("One of user_id, agent_id, run_id must be provided")
-
-        if not litellm.supports_function_calling(model):
-            raise ValueError(
-                f"Model '{model}' does not support function calling. Please use a model that supports function calling."
-            )
-
+        
+        
         prepared_messages = self._prepare_messages(messages)
         if prepared_messages[-1]["role"] == "user":
             self._async_add_to_memory(
@@ -100,8 +92,8 @@ class Completions:
             prepared_messages[-1]["content"] = self._format_query_with_memories(
                 messages, relevant_memories
             )
-
-        response = litellm.completion(
+        client = OpenAI()
+        response = client.chat.completions.create(
             model=model,
             messages=prepared_messages,
             temperature=temperature,
@@ -123,14 +115,9 @@ class Completions:
             logprobs=logprobs,
             top_logprobs=top_logprobs,
             parallel_tool_calls=parallel_tool_calls,
-            deployment_id=deployment_id,
             extra_headers=extra_headers,
             functions=functions,
             function_call=function_call,
-            base_url=base_url,
-            api_version=api_version,
-            api_key=api_key,
-            model_list=model_list,
         )
         capture_client_event("mem0.chat.create", self)
         return response
@@ -144,9 +131,12 @@ class Completions:
     def _async_add_to_memory(
         self, messages, user_id, agent_id, run_id, metadata, filters
     ):
+        flattened_messages = "\n".join(
+            [f"{message['role']}: {message['content']}" for message in messages]
+        )
         def add_task():
             self.mem0_client.add(
-                messages=messages,
+                flattened_messages,
                 user_id=user_id,
                 agent_id=agent_id,
                 run_id=run_id,
@@ -175,4 +165,4 @@ class Completions:
 
     def _format_query_with_memories(self, messages, relevant_memories):
         memories_text = "\n".join(memory["memory"] for memory in relevant_memories)
-        return f"- Relevant Memories/Facts: {memories_text}\n\n- User Question: {messages[-1]['content']}"
+        return f"- 相关记忆/事实: {memories_text}\n\n- 用户问题: {messages[-1]['content']}"

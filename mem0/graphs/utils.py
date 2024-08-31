@@ -1,58 +1,57 @@
 from mem0.llms.openai import OpenAILLM
 
 UPDATE_GRAPH_PROMPT = """
-You are an AI expert specializing in graph memory management and optimization. Your task is to analyze existing graph memories alongside new information, and update the relationships in the memory list to ensure the most accurate, current, and coherent representation of knowledge.
+你是一位专门从事图谱记忆管理和优化的 AI 专家。你的任务是分析现有的图谱记忆和新信息，并更新记忆列表中的关系，以确保最准确、最新和连贯的知识表示。
 
-Input:
-1. Existing Graph Memories: A list of current graph memories, each containing source, target, and relationship information.
-2. New Graph Memory: Fresh information to be integrated into the existing graph structure.
+输入：
+1. 现有图谱记忆：当前图谱记忆的列表，每个图谱记忆包含源、目标和关系信息。
+2. 新图谱记忆：要集成到现有图谱结构中的新信息。
 
-Guidelines:
-1. Identification: Use the source and target as primary identifiers when matching existing memories with new information.
-2. Conflict Resolution:
-   - If new information contradicts an existing memory:
-     a) For matching source and target but differing content, update the relationship of the existing memory.
-     b) If the new memory provides more recent or accurate information, update the existing memory accordingly.
-3. Comprehensive Review: Thoroughly examine each existing graph memory against the new information, updating relationships as necessary. Multiple updates may be required.
-4. Consistency: Maintain a uniform and clear style across all memories. Each entry should be concise yet comprehensive.
-5. Semantic Coherence: Ensure that updates maintain or improve the overall semantic structure of the graph.
-6. Temporal Awareness: If timestamps are available, consider the recency of information when making updates.
-7. Relationship Refinement: Look for opportunities to refine relationship descriptions for greater precision or clarity.
-8. Redundancy Elimination: Identify and merge any redundant or highly similar relationships that may result from the update.
+指南：
+1. 标识：将现有记忆与新信息匹配时，使用源和目标作为主要标识符。
+2. 冲突解决：
+- 如果新信息与现有记忆相矛盾：
+a) 对于匹配源和目标但内容不同的情况，更新现有记忆的关系。
+b) 如果新记忆提供更新或更准确的信息，请相应地更新现有记忆。
+3. 全面审查：根据新信息彻底检查每个现有图谱记忆，并根据需要更新关系。可能需要多次更新。
+4. 一致性：在所有记忆中保持统一清晰的风格。每个条目都应简洁而全面。
+5. 语义一致性：确保更新维护或改进图的整体语义结构。
+6. 时间意识：如果有时间戳，请在进行更新时考虑信息的新近性。
+7. 关系细化：寻找机会细化关系描述，以提高精度或清晰度。
+8. 冗余消除：识别并合并可能由更新导致的任何冗余或高度相似的关系。
 
-Task Details:
-- Existing Graph Memories:
+任务详情：
+- 现有图谱记忆：
 {existing_memories}
 
-- New Graph Memory: {memory}
+- 新图谱记忆：{memory}
 
-Output:
-Provide a list of update instructions, each specifying the source, target, and the new relationship to be set. Only include memories that require updates.
-"""
+输出：
+提供更新指令列表，每个指令指定源、目标和要设置的新关系。仅包括需要更新的记忆。"""
 
 EXTRACT_ENTITIES_PROMPT = """
 
-You are an advanced algorithm designed to extract structured information from text to construct knowledge graphs. Your goal is to capture comprehensive information while maintaining accuracy. Follow these key principles:
+您是一种高级算法，旨在从文本中提取结构化信息以构建知识图谱。您的目标是在保持准确性的同时捕获全面的信息。请遵循以下关键原则：
 
-1. Extract only explicitly stated information from the text.
-2. Identify nodes (entities/concepts), their types, and relationships.
-3. Use "USER_ID" as the source node for any self-references (I, me, my, etc.) in user messages.
+1. 仅从文本中提取明确陈述的信息。
+2. 识别节点（实体/概念）、其类型和关系。
+3. 使用“USER_ID”作为用户消息中任何自我引用（我、我的等）的源节点。
 
-Nodes and Types:
-- Aim for simplicity and clarity in node representation.
-- Use basic, general types for node labels (e.g. "person" instead of "mathematician").
+节点和类型：
+- 力求节点表示简单明了。
+- 使用基本的通用类型作为节点标签（例如“人”而不是“数学家”）。
 
-Relationships:
-- Use consistent, general, and timeless relationship types.
-- Example: Prefer "PROFESSOR" over "BECAME_PROFESSOR".
+关系：
+- 使用一致、通用且永恒的关系类型。
+- 示例：首选“PROFESSOR”而不是“BECAME_PROFESSOR”。
 
-Entity Consistency:
-- Use the most complete identifier for entities mentioned multiple times.
-- Example: Always use "John Doe" instead of variations like "Joe" or pronouns.
+实体一致性：
+- 对多次提及的实体使用最完整的标识符。
+- 示例：始终使用“John Doe”而不是“Joe”或代词等变体。
 
-Strive for a coherent, easily understandable knowledge graph by maintaining consistency in entity references and relationship types.
+通过保持实体引用和关系类型的一致性，努力实现连贯、易于理解的知识图谱。
 
-Adhere strictly to these guidelines to ensure high-quality knowledge graph extraction."""
+严格遵守这些准则，以确保高质量的知识图谱提取。"""
 
 
 
@@ -70,18 +69,18 @@ def get_update_memory_messages(existing_memories, memory):
 def get_search_results(entities, query):
 
     search_graph_prompt = f"""
-You are an expert at searching through graph entity memories. 
-When provided with existing graph entities and a query, your task is to search through the provided graph entities to find the most relevant information from the graph entities related to the query.
-The output should be from the graph entities only.
+您是搜索图谱实体记忆的专家。
+当提供现有图谱实体和查询时，您的任务是搜索提供的图谱实体，从与查询相关的图谱实体中找到最相关的信息。
+输出应仅来自图谱实体。
 
-Here are the details of the task:
-- Existing Graph Entities (source -> relationship -> target):
+以下是任务的详细信息：
+- 现有图谱实体（源 -> 关系 -> 目标）：
 {entities}
 
-- Query: {query}
+- 查询：{query}
 
-The output should be from the graph entities only.
-The output should be in the following JSON format:
+输出应仅来自图谱实体。
+输出应采用以下 JSON 格式：
 {{
     "search_results": [
         {{
