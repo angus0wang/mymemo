@@ -115,7 +115,7 @@ class MemoryGraph:
     def _search(self, query):
         search_results = self.llm.generate_response(
             messages=[
-                {"role": "system", "content": f"You are a smart assistant who understands the entities, their types, and relations in a given text. If user message contains self reference such as 'I', 'me', 'my' etc. then use {self.user_id} as the source node. Extract the entities."},
+                {"role": "system", "content": f"您是一位智能助手，能够理解给定文本中的实体、实体类型和关系。如果用户消息包含自我引用，例如“我”、“我”、“我的”等，则使用 {self.user_id} 作为源节点。提取实体。"},
                 {"role": "user", "content": query},
             ],
             tools = [SEARCH_TOOL]

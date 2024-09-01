@@ -104,7 +104,7 @@ class Memory(MemoryBase):
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an expert at deducing facts, preferences and memories from unstructured text.",
+                    "content": "您是从非结构化文本中推断事实、偏好和记忆的专家。",
                 },
                 {"role": "user", "content": prompt},
             ]
@@ -146,6 +146,11 @@ class Memory(MemoryBase):
             }
             for tool_call in tool_calls:
                 function_name = tool_call["name"]
+                if function_name not in available_functions:
+                    if "update" in function_name:
+                        function_name = "update_memory"
+                    else: ##set as a default method if func call has hallucinations
+                        function_name = "update_memory"
                 function_to_call = available_functions[function_name]
                 function_args = tool_call["arguments"]
                 logging.info(
